@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SetViewController.swift
 //  iOS11StanfordCourse-Assignment2
 //
 //  Created by Natxo Raga Llorens on 17/8/18.
@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+
+class SetViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +21,4 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
 }
-
