@@ -12,6 +12,9 @@
 		3815FF6521271AC80053303A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3815FF6321271AC80053303A /* Main.storyboard */; };
 		3815FF6721271AC90053303A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3815FF6621271AC90053303A /* Assets.xcassets */; };
 		3815FF6A21271AC90053303A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3815FF6821271AC90053303A /* LaunchScreen.storyboard */; };
+		3815FF722127258F0053303A /* SetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3815FF712127258F0053303A /* SetCard.swift */; };
+		3815FF74212726460053303A /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3815FF73212726460053303A /* Set.swift */; };
+		3815FF7621273D450053303A /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3815FF7521273D450053303A /* Random.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,9 @@
 		3815FF6621271AC90053303A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3815FF6921271AC90053303A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3815FF6B21271ACA0053303A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3815FF712127258F0053303A /* SetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCard.swift; sourceTree = "<group>"; };
+		3815FF73212726460053303A /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
+		3815FF7521273D450053303A /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +61,10 @@
 			isa = PBXGroup;
 			children = (
 				3815FF5F21271AC80053303A /* AppDelegate.swift */,
+				3815FF712127258F0053303A /* SetCard.swift */,
+				3815FF73212726460053303A /* Set.swift */,
 				3815FF6121271AC80053303A /* SetViewController.swift */,
+				3815FF7521273D450053303A /* Random.swift */,
 				3815FF6321271AC80053303A /* Main.storyboard */,
 				3815FF6621271AC90053303A /* Assets.xcassets */,
 				3815FF6821271AC90053303A /* LaunchScreen.storyboard */,
@@ -135,6 +144,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3815FF74212726460053303A /* Set.swift in Sources */,
+				3815FF722127258F0053303A /* SetCard.swift in Sources */,
+				3815FF7621273D450053303A /* Random.swift in Sources */,
 				3815FF6221271AC80053303A /* SetViewController.swift in Sources */,
 				3815FF6021271AC80053303A /* AppDelegate.swift in Sources */,
 			);
