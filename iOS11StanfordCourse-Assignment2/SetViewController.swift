@@ -12,24 +12,25 @@ import UIKit
 class SetViewController: UIViewController {
 
     // Model
-    private var game: Set! { didSet { updateViewFromModel() } }
+    private var game: SetGame! { didSet { updateViewFromModel() } }
     
     @IBOutlet private weak var dealMoreCardsButton: UIButton!
     @IBOutlet private var cardButtons: [UIButton]!
+    @IBOutlet private weak var scoreLabel: UILabel!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        game = Set()
+        game = SetGame()
         for cardButton in cardButtons { cardButton.layer.cornerRadius = 8.0 }
     }
     
     @IBAction private func touchNewGame() {
-        game = Set()
+        game = SetGame()
     }
     
-    @IBAction private func touchDealMoreCards() {
-        game.dealMoreCards()
+    @IBAction private func touchDealThreeMoreCards() {
+        game.dealThreeMoreCards()
         updateViewFromModel()
     }
     
@@ -49,7 +50,7 @@ class SetViewController: UIViewController {
                 // selected card
                 if game.selectedCards.contains(dealtCard) {
                     cardButton.layer.borderWidth = 3.0
-                    cardButton.layer.borderColor = UIColor.blue.cgColor
+                    cardButton.layer.borderColor = game.selectedCards.count == 3 ? UIColor.red.cgColor : UIColor.blue.cgColor
                 }
                 // matched card
                 else if game.matchedCards.contains(dealtCard) {
@@ -67,7 +68,10 @@ class SetViewController: UIViewController {
             }
         }
         // enable/disable deal more cards button
-        dealMoreCardsButton.isEnabled = game.dealtCards.count < cardButtons.count
+        dealMoreCardsButton.isEnabled = !game.matchedCards.isEmpty || game.dealtCards.count < cardButtons.count
+        
+        // score
+        scoreLabel.text = "Score: \(game.score)"
     }
     
     private func updateCardButtonContent(_ cardButton: UIButton, fromCard card: SetCard) {
@@ -92,12 +96,9 @@ class SetViewController: UIViewController {
         // shading
         var foregroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         switch card.shading {
-            // filled
-            case .shading1: foregroundColor = strokeColor
-            // "stripped"
-            case .shading2: foregroundColor = strokeColor.withAlphaComponent(0.25)
-            // outline
-            case .shading3: break
+            case .shading1: foregroundColor = strokeColor                           // filled
+            case .shading2: foregroundColor = strokeColor.withAlphaComponent(0.25)  // "stripped"
+            case .shading3: break                                                   // outline
         }
         
         let paragraphStyle = NSMutableParagraphStyle()

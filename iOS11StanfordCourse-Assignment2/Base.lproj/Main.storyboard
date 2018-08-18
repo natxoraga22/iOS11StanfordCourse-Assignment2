@@ -281,16 +281,16 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2mH-xO-8LL">
-                                <rect key="frame" x="218" y="44" width="141" height="36"/>
+                                <rect key="frame" x="202" y="44" width="157" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Deal more cards">
+                                <state key="normal" title="Deal 3 more cards">
                                     <color key="titleColor" red="0.9951923077" green="0.9903846154" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <state key="disabled">
                                     <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="touchDealMoreCards" destination="BYZ-38-t0r" eventType="touchUpInside" id="GdD-yN-j36"/>
+                                    <action selector="touchDealThreeMoreCards" destination="BYZ-38-t0r" eventType="touchUpInside" id="GdD-yN-j36"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AOO-4V-PXA">
@@ -319,6 +319,7 @@
                     </view>
                     <connections>
                         <outlet property="dealMoreCardsButton" destination="2mH-xO-8LL" id="QCD-Kv-1Ph"/>
+                        <outlet property="scoreLabel" destination="AOO-4V-PXA" id="Gyx-OJ-PgM"/>
                         <outletCollection property="cardButtons" destination="P50-03-ip8" collectionClass="NSMutableArray" id="hE0-Cf-TP8"/>
                         <outletCollection property="cardButtons" destination="FWK-25-Voh" collectionClass="NSMutableArray" id="t88-Jf-JZ8"/>
                         <outletCollection property="cardButtons" destination="8ec-p5-WiX" collectionClass="NSMutableArray" id="rt5-bd-P2l"/>

@@ -1,5 +1,5 @@
 //
-//  Set.swift
+//  SetGame.swift
 //  iOS11StanfordCourse-Assignment2
 //
 //  Created by Natxo Raga Llorens on 17/8/18.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-class Set {
+class SetGame {
     
     private static let numberOfStartingCards = 12
     
@@ -18,9 +18,15 @@ class Set {
     private(set) var selectedCards = [SetCard]()
     private(set) var matchedCards = [SetCard]()
     
+    // Score
+    private(set) var score = 0
+    private static let matchScore = +5
+    private static let mismatchScore = -3
+    private static let deselectScore = -1
+    
     
     init() {
-        // Create a standard Set deck (one card for each combination)
+        // create a standard Set deck (one card for each combination)
         for number in SetCard.minNumber...SetCard.maxNumber {
             for symbol in SetCardSymbol.allCases {
                 for shading in SetCardShading.allCases {
@@ -30,36 +36,53 @@ class Set {
                 }
             }
         }
-        // Deal the starting cards
-        for _ in 1...Set.numberOfStartingCards { dealRandomCard() }
+        // deal the starting cards
+        for _ in 1...SetGame.numberOfStartingCards { dealtCards.append(getRandomCard()) }
     }
     
-    private func dealRandomCard() {
-        dealtCards.append(deck.remove(at: Int.random(deck.count)))
+    private func getRandomCard() -> SetCard {
+        return deck.remove(at: Int.random(deck.count))
     }
     
-    func dealMoreCards() {
-        for _ in 1...3 { dealRandomCard() }
+    func dealThreeMoreCards() {
+        if !matchedCards.isEmpty { replaceMatchedCards() }
+        else {
+            for _ in 1...3 { dealtCards.append(getRandomCard()) }
+        }
+    }
+    
+    private func replaceMatchedCards() {
+        for matchedCard in matchedCards { dealtCards[dealtCards.index(of: matchedCard)!] = getRandomCard() }
+        matchedCards.removeAll()
     }
     
     func chooseCard(at index: Int) {
         if (dealtCards.indices.contains(index)) {
             let chosenCard = dealtCards[index]
+            
+            // process previous mismatch
+            if selectedCards.count == 3 { selectedCards.removeAll() }
+            
             // card already selected --> deselect
-            if selectedCards.contains(chosenCard) { selectedCards.remove(at: selectedCards.index(of: chosenCard)!) }
+            if selectedCards.contains(chosenCard) {
+                selectedCards.remove(at: selectedCards.index(of: chosenCard)!)
+                score += SetGame.deselectScore
+            }
             else {
                 if !matchedCards.contains(chosenCard) { selectedCards += [chosenCard] }
                 
                 // process previous match
-                for matchedCard in matchedCards { dealtCards.remove(at: dealtCards.index(of: matchedCard)!) }
-                matchedCards.removeAll()
+                replaceMatchedCards()
                 
                 // try to match
                 if (selectedCards.count == 3) {
                     if (selectedCards[0].matchesWith(selectedCards[1], selectedCards[2])) {
+                        // MATCH!
                         matchedCards.append(contentsOf: selectedCards)
+                        selectedCards.removeAll()
+                        score += SetGame.matchScore
                     }
-                    selectedCards.removeAll()
+                    else { score += SetGame.mismatchScore }
                 }
             }
         }
