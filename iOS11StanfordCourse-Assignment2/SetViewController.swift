@@ -14,7 +14,8 @@ class SetViewController: UIViewController {
     // Model
     private var game: Set! { didSet { updateViewFromModel() } }
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private weak var dealMoreCardsButton: UIButton!
+    @IBOutlet private var cardButtons: [UIButton]!
     
     
     override func viewDidLoad() {
@@ -22,7 +23,17 @@ class SetViewController: UIViewController {
         game = Set()
     }
     
+    @IBAction private func touchDealMoreCards(_ sender: UIButton) {
+        game.dealMoreCards()
+        updateViewFromModel()
+        // disable button if UI full of cards
+        if game.dealtCards.count == cardButtons.count {
+            dealMoreCardsButton.isEnabled = false
+        }
+    }
+    
     private func updateViewFromModel() {
+        // card buttons
         for index in cardButtons.indices {
             let cardButton = cardButtons[index]
             if index < game.dealtCards.count {
@@ -70,13 +81,17 @@ class SetViewController: UIViewController {
             case .shading3: strokeWidth = 5.0
         }
         
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 0.9
         let attributes: [NSAttributedStringKey: Any] = [
             .foregroundColor: foregroundColor,
             .strokeColor: strokeColor,
-            .strokeWidth: strokeWidth
+            .strokeWidth: strokeWidth,
+            .paragraphStyle: paragraphStyle
         ]
         let attributedText = NSAttributedString(string: text, attributes: attributes)
         cardButton.setAttributedTitle(attributedText, for: UIControlState.normal)
+        cardButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
 
 }
