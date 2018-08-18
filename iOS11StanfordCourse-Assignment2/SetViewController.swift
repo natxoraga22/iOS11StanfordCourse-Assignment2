@@ -21,15 +21,21 @@ class SetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         game = Set()
+        for cardButton in cardButtons { cardButton.layer.cornerRadius = 8.0 }
     }
     
-    @IBAction private func touchDealMoreCards(_ sender: UIButton) {
+    @IBAction private func touchNewGame() {
+        game = Set()
+    }
+    
+    @IBAction private func touchDealMoreCards() {
         game.dealMoreCards()
         updateViewFromModel()
-        // disable button if UI full of cards
-        if game.dealtCards.count == cardButtons.count {
-            dealMoreCardsButton.isEnabled = false
-        }
+    }
+    
+    @IBAction private func touchCard(_ sender: UIButton) {
+        game.chooseCard(at: cardButtons.index(of: sender)!)
+        updateViewFromModel()
     }
     
     private func updateViewFromModel() {
@@ -39,13 +45,29 @@ class SetViewController: UIViewController {
             if index < game.dealtCards.count {
                 let dealtCard = game.dealtCards[index]
                 updateCardButtonContent(cardButton, fromCard:dealtCard)
+                
+                // selected card
+                if game.selectedCards.contains(dealtCard) {
+                    cardButton.layer.borderWidth = 3.0
+                    cardButton.layer.borderColor = UIColor.blue.cgColor
+                }
+                // matched card
+                else if game.matchedCards.contains(dealtCard) {
+                    cardButton.layer.borderWidth = 3.0
+                    cardButton.layer.borderColor = UIColor.green.cgColor
+                }
+                else { cardButton.layer.borderWidth = 0.0 }
             }
+            // card not dealt
             else {
                 cardButton.setTitle(nil, for: UIControlState.normal)
                 cardButton.setAttributedTitle(nil, for: UIControlState.normal)
                 cardButton.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+                cardButton.layer.borderWidth = 0.0
             }
         }
+        // enable/disable deal more cards button
+        dealMoreCardsButton.isEnabled = game.dealtCards.count < cardButtons.count
     }
     
     private func updateCardButtonContent(_ cardButton: UIButton, fromCard card: SetCard) {
@@ -69,16 +91,13 @@ class SetViewController: UIViewController {
         }
         // shading
         var foregroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        var strokeWidth = 0.0
         switch card.shading {
             // filled
             case .shading1: foregroundColor = strokeColor
             // "stripped"
-            case .shading2:
-                strokeWidth = -5.0
-                foregroundColor = strokeColor.withAlphaComponent(0.25)
+            case .shading2: foregroundColor = strokeColor.withAlphaComponent(0.25)
             // outline
-            case .shading3: strokeWidth = 5.0
+            case .shading3: break
         }
         
         let paragraphStyle = NSMutableParagraphStyle()
@@ -86,7 +105,7 @@ class SetViewController: UIViewController {
         let attributes: [NSAttributedStringKey: Any] = [
             .foregroundColor: foregroundColor,
             .strokeColor: strokeColor,
-            .strokeWidth: strokeWidth,
+            .strokeWidth: -5.0,
             .paragraphStyle: paragraphStyle
         ]
         let attributedText = NSAttributedString(string: text, attributes: attributes)

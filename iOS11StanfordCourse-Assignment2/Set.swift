@@ -15,8 +15,8 @@ class Set {
     
     private var deck = [SetCard]()
     private(set) var dealtCards = [SetCard]()
-    private var selectedCards = [SetCard]()
-    private var matchedCards = [SetCard]()
+    private(set) var selectedCards = [SetCard]()
+    private(set) var matchedCards = [SetCard]()
     
     
     init() {
@@ -42,8 +42,27 @@ class Set {
         for _ in 1...3 { dealRandomCard() }
     }
     
-    func chooseCard() {
-        
+    func chooseCard(at index: Int) {
+        if (dealtCards.indices.contains(index)) {
+            let chosenCard = dealtCards[index]
+            // card already selected --> deselect
+            if selectedCards.contains(chosenCard) { selectedCards.remove(at: selectedCards.index(of: chosenCard)!) }
+            else {
+                if !matchedCards.contains(chosenCard) { selectedCards += [chosenCard] }
+                
+                // process previous match
+                for matchedCard in matchedCards { dealtCards.remove(at: dealtCards.index(of: matchedCard)!) }
+                matchedCards.removeAll()
+                
+                // try to match
+                if (selectedCards.count == 3) {
+                    if (selectedCards[0].matchesWith(selectedCards[1], selectedCards[2])) {
+                        matchedCards.append(contentsOf: selectedCards)
+                    }
+                    selectedCards.removeAll()
+                }
+            }
+        }
     }
     
 }
