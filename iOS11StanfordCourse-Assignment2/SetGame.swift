@@ -29,6 +29,7 @@ class SetGame {
     private static let matchScore = +5
     private static let mismatchScore = -3
     private static let deselectScore = -1
+    private static let dealThreeCardsWithMatchOnTableScore = -2
     
     
     init() {
@@ -54,6 +55,7 @@ class SetGame {
         precondition(deck.count >= 3, "Not enough cards in deck")
         if let match = selectedCardsMatch, match { replaceDealtSelectedCards() }
         else {
+            if getMatchInDealtCards() != nil { score += SetGame.dealThreeCardsWithMatchOnTableScore }
             for _ in 1...3 { dealtCards.append(getRandomCard()!) }
         }
     }
@@ -93,6 +95,19 @@ class SetGame {
                 else { score += SetGame.mismatchScore }
             }
         }
+    }
+    
+    // TODO: Improve
+    func getMatchInDealtCards() -> [SetCard]? {
+        let dealtCardsNotMatched = dealtCards.filter({ !matchedCards.contains($0) })
+        for card1 in dealtCardsNotMatched {
+            for card2 in dealtCardsNotMatched {
+                for card3 in dealtCardsNotMatched {
+                    if card1.matchesWith(card2, card3) { return [card1, card2, card3] }
+                }
+            }
+        }
+        return nil
     }
     
 }
