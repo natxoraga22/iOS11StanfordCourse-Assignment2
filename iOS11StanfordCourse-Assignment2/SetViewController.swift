@@ -45,33 +45,40 @@ class SetViewController: UIViewController {
             let cardButton = cardButtons[index]
             if index < game.dealtCards.count {
                 let dealtCard = game.dealtCards[index]
-                updateCardButtonContent(cardButton, fromCard:dealtCard)
-                
-                // selected card
-                if game.selectedCards.contains(dealtCard) {
-                    cardButton.layer.borderWidth = 3.0
-                    cardButton.layer.borderColor = game.selectedCards.count == 3 ? UIColor.red.cgColor : UIColor.blue.cgColor
-                }
                 // matched card
-                else if game.matchedCards.contains(dealtCard) {
-                    cardButton.layer.borderWidth = 3.0
-                    cardButton.layer.borderColor = UIColor.green.cgColor
+                if game.matchedCards.contains(dealtCard) { hideCardButton(cardButton) }
+                else {
+                    updateCardButtonContent(cardButton, fromCard:dealtCard)
+                    
+                    // selected card (can be matched, mismatched or simply selected)
+                    if game.selectedCards.contains(dealtCard) {
+                        cardButton.layer.borderWidth = 3.0
+                        if let cardMatched = game.selectedCardsMatch {
+                            if cardMatched { cardButton.layer.borderColor = UIColor.green.cgColor }
+                            else { cardButton.layer.borderColor = UIColor.red.cgColor }
+                        }
+                        else { cardButton.layer.borderColor = UIColor.blue.cgColor }
+                    }
+                    // not selected card
+                    else { cardButton.layer.borderWidth = 0.0 }
                 }
-                else { cardButton.layer.borderWidth = 0.0 }
             }
             // card not dealt
-            else {
-                cardButton.setTitle(nil, for: UIControlState.normal)
-                cardButton.setAttributedTitle(nil, for: UIControlState.normal)
-                cardButton.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
-                cardButton.layer.borderWidth = 0.0
-            }
+            else { hideCardButton(cardButton) }
         }
         // enable/disable deal more cards button
-        dealMoreCardsButton.isEnabled = !game.matchedCards.isEmpty || game.dealtCards.count < cardButtons.count
+        let uiIsFull = !(game.selectedCardsMatch ?? false) && game.dealtCards.count == cardButtons.count
+        dealMoreCardsButton.isEnabled = game.deck.count >= 3 && !uiIsFull
         
         // score
         scoreLabel.text = "Score: \(game.score)"
+    }
+    
+    private func hideCardButton(_ cardButton: UIButton) {
+        cardButton.setTitle(nil, for: UIControlState.normal)
+        cardButton.setAttributedTitle(nil, for: UIControlState.normal)
+        cardButton.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+        cardButton.layer.borderWidth = 0.0
     }
     
     private func updateCardButtonContent(_ cardButton: UIButton, fromCard card: SetCard) {

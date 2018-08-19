@@ -13,9 +13,15 @@ class SetGame {
     
     private static let numberOfStartingCards = 12
     
-    private var deck = [SetCard]()
+    private(set) var deck = [SetCard]()
     private(set) var dealtCards = [SetCard]()
     private(set) var selectedCards = [SetCard]()
+    var selectedCardsMatch: Bool? {
+        get {
+            if selectedCards.count < 3 { return nil }
+            else { return selectedCards[0].matchesWith(selectedCards[1], selectedCards[2]) }
+        }
+    }
     private(set) var matchedCards = [SetCard]()
     
     // Score
@@ -37,53 +43,54 @@ class SetGame {
             }
         }
         // deal the starting cards
-        for _ in 1...SetGame.numberOfStartingCards { dealtCards.append(getRandomCard()) }
+        for _ in 1...SetGame.numberOfStartingCards { dealtCards.append(getRandomCard()!) }
     }
     
-    private func getRandomCard() -> SetCard {
-        return deck.remove(at: Int.random(deck.count))
+    private func getRandomCard() -> SetCard? {
+        return !deck.isEmpty ? deck.remove(at: Int.random(deck.count)) : nil
     }
     
     func dealThreeMoreCards() {
-        if !matchedCards.isEmpty { replaceMatchedCards() }
+        precondition(deck.count >= 3, "Not enough cards in deck")
+        if let match = selectedCardsMatch, match { replaceDealtSelectedCards() }
         else {
-            for _ in 1...3 { dealtCards.append(getRandomCard()) }
+            for _ in 1...3 { dealtCards.append(getRandomCard()!) }
         }
     }
     
-    private func replaceMatchedCards() {
-        for matchedCard in matchedCards { dealtCards[dealtCards.index(of: matchedCard)!] = getRandomCard() }
-        matchedCards.removeAll()
+    private func replaceDealtSelectedCards() {
+        for selectedCard in selectedCards {
+            if let randomCard = getRandomCard() { dealtCards[dealtCards.index(of: selectedCard)!] = randomCard }
+        }
+        selectedCards.removeAll()
     }
     
     func chooseCard(at index: Int) {
-        if (dealtCards.indices.contains(index)) {
-            let chosenCard = dealtCards[index]
-            
-            // process previous mismatch
-            if selectedCards.count == 3 { selectedCards.removeAll() }
-            
+        // store chosen card
+        let chosenCard: SetCard? = dealtCards.indices.contains(index) ? dealtCards[index] : nil
+        
+        // process previous match/mismatch
+        if let previousMatch = selectedCardsMatch {
+            if previousMatch {
+                matchedCards.append(contentsOf: selectedCards)
+                replaceDealtSelectedCards()
+            }
+            else { selectedCards.removeAll() }
+        }
+        
+        if let card = chosenCard, !matchedCards.contains(dealtCards[index]) {
             // card already selected --> deselect
-            if selectedCards.contains(chosenCard) {
-                selectedCards.remove(at: selectedCards.index(of: chosenCard)!)
+            if selectedCards.contains(card) {
+                selectedCards.remove(at: selectedCards.index(of: card)!)
                 score += SetGame.deselectScore
             }
-            else {
-                if !matchedCards.contains(chosenCard) { selectedCards += [chosenCard] }
-                
-                // process previous match
-                replaceMatchedCards()
-                
-                // try to match
-                if (selectedCards.count == 3) {
-                    if (selectedCards[0].matchesWith(selectedCards[1], selectedCards[2])) {
-                        // MATCH!
-                        matchedCards.append(contentsOf: selectedCards)
-                        selectedCards.removeAll()
-                        score += SetGame.matchScore
-                    }
-                    else { score += SetGame.mismatchScore }
-                }
+            // card not selected and not changed (processing previous match can change the dealt cards) --> select
+            else if dealtCards[index] == card { selectedCards += [card] }
+            
+            // Check match/mismatch
+            if let newMatch = selectedCardsMatch {
+                if newMatch { score += SetGame.matchScore }
+                else { score += SetGame.mismatchScore }
             }
         }
     }
