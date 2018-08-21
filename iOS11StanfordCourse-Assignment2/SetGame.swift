@@ -13,6 +13,7 @@ class SetGame {
     
     private static let numberOfStartingCards = 12
     
+    // Cards
     private(set) var deck = [SetCard]()
     private(set) var dealtCards = [SetCard]()
     private(set) var selectedCards = [SetCard]()
@@ -30,6 +31,11 @@ class SetGame {
     private static let mismatchScore = -3
     private static let deselectScore = -1
     private static let dealThreeCardsWithMatchOnTableScore = -2
+    
+    // AIPlayer
+    private lazy var aiPlayer = AIPlayer(game: self)
+    private(set) var aiPlayerScore = 0
+    var aiPlayerDelegate: AIPlayerDelegate?
     
     
     init() {
@@ -91,7 +97,18 @@ class SetGame {
             
             // Check match/mismatch
             if let newMatch = selectedCardsMatch {
-                if newMatch { score += SetGame.matchScore }
+                if newMatch {
+                    score += SetGame.matchScore
+                    
+                    // AI Player
+                    aiPlayer.stopSearching()
+                    aiPlayer.searchMatch { matchCards in
+                        self.selectedCards = matchCards
+                        self.replaceDealtSelectedCards()
+                        self.aiPlayerScore += SetGame.matchScore
+                        self.aiPlayerDelegate?.didFindMatch()
+                    }
+                }
                 else { score += SetGame.mismatchScore }
             }
         }

@@ -24,21 +24,23 @@ class AIPlayer {
         self.game = game
     }
     
-    func searchMatch(onMatchFound matchFoundCallback: @escaping (() -> Void)) {
+    func searchMatch(onMatchFound matchFoundCallback: @escaping ((_: [SetCard]) -> Void)) {
         status = .thinking
         
-        let timeInterval = Double.random(min: AIPlayer.minThinkingTime, max: AIPlayer.maxThinkingTime)
-        currentTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { (timer) in
-            if let matchCards = self.game.getMatchInDealtCards() {
-                // TODO: Deselect cards before choosing
-                for matchCard in matchCards {
-                    self.game.chooseCard(at: self.game.dealtCards.index(of: matchCard)!)
+        if currentTimer == nil {
+            let timeInterval = Double.random(min: AIPlayer.minThinkingTime, max: AIPlayer.maxThinkingTime)
+            currentTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { (timer) in
+                if let matchCards = self.game.getMatchInDealtCards() {
+                    self.status = .matchFound
+                    matchFoundCallback(matchCards)
                 }
-                if self.game.deck.count >= 3 { self.game.dealThreeMoreCards() }
-                self.status = .matchFound
             }
-            matchFoundCallback()
         }
+    }
+    
+    func stopSearching() {
+        currentTimer?.invalidate()
+        currentTimer = nil
     }
     
 }

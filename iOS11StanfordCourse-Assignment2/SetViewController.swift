@@ -9,10 +9,15 @@
 import UIKit
 
 
-class SetViewController: UIViewController {
-
+class SetViewController: UIViewController, AIPlayerDelegate {
+    
     // Model
-    private var game: SetGame! { didSet { updateViewFromModel() } }
+    private var game: SetGame! {
+        didSet {
+            game.aiPlayerDelegate = self
+            updateViewFromModel()
+        }
+    }
     
     @IBOutlet private weak var dealMoreCardsButton: UIButton!
     @IBOutlet private var cardButtons: [UIButton]!
@@ -48,6 +53,10 @@ class SetViewController: UIViewController {
                 cardButton.layer.borderColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
             }
         }
+    }
+    
+    func didFindMatch() {
+        updateViewFromModel()
     }
     
     private func updateViewFromModel() {
