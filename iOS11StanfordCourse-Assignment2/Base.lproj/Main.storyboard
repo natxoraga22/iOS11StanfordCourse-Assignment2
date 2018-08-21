@@ -299,13 +299,29 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IjI-6N-31w">
+                                <rect key="frame" x="306" y="748" width="53" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Cheat">
+                                    <color key="titleColor" red="0.9951923077" green="0.9903846154" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="touchCheat" destination="BYZ-38-t0r" eventType="touchUpInside" id="HHH-Ww-vUC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.27843137254901962" green="0.44313725490196076" blue="0.28235294117647058" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="AOO-4V-PXA" secondAttribute="bottom" id="4HS-PX-26c"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OBf-en-Z68" secondAttribute="trailing" constant="16" id="4Xh-Tx-OJp"/>
+                            <constraint firstItem="IjI-6N-31w" firstAttribute="top" secondItem="OBf-en-Z68" secondAttribute="bottom" constant="8" symbolic="YES" id="4pX-e6-6Yu"/>
                             <constraint firstItem="AOO-4V-PXA" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="50i-y7-gOF"/>
                             <constraint firstItem="jUl-6x-IRJ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="92M-x6-QxU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="IjI-6N-31w" secondAttribute="bottom" id="C0m-cT-Vd6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="IjI-6N-31w" secondAttribute="trailing" constant="16" id="HWD-lr-TOF"/>
                             <constraint firstItem="AOO-4V-PXA" firstAttribute="top" secondItem="OBf-en-Z68" secondAttribute="bottom" constant="8" symbolic="YES" id="JEH-fm-okh"/>
                             <constraint firstItem="2mH-xO-8LL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Lab-49-ZIf"/>
                             <constraint firstItem="OBf-en-Z68" firstAttribute="top" secondItem="2mH-xO-8LL" secondAttribute="bottom" constant="8" symbolic="YES" id="NnS-V6-sXn"/>
@@ -314,10 +330,12 @@
                             <constraint firstItem="OBf-en-Z68" firstAttribute="top" secondItem="jUl-6x-IRJ" secondAttribute="bottom" constant="8" symbolic="YES" id="kXg-fk-iKv"/>
                             <constraint firstItem="2mH-xO-8LL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jUl-6x-IRJ" secondAttribute="trailing" constant="8" symbolic="YES" id="kaf-Wh-l48"/>
                             <constraint firstItem="jUl-6x-IRJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="s1X-kA-SNX"/>
+                            <constraint firstItem="IjI-6N-31w" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="AOO-4V-PXA" secondAttribute="trailing" constant="8" symbolic="YES" id="too-bA-MLM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="cheatButton" destination="IjI-6N-31w" id="Z5O-mM-v7S"/>
                         <outlet property="dealMoreCardsButton" destination="2mH-xO-8LL" id="QCD-Kv-1Ph"/>
                         <outlet property="scoreLabel" destination="AOO-4V-PXA" id="Gyx-OJ-PgM"/>
                         <outletCollection property="cardButtons" destination="P50-03-ip8" collectionClass="NSMutableArray" id="hE0-Cf-TP8"/>

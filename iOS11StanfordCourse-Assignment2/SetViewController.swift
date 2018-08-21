@@ -17,6 +17,7 @@ class SetViewController: UIViewController {
     @IBOutlet private weak var dealMoreCardsButton: UIButton!
     @IBOutlet private var cardButtons: [UIButton]!
     @IBOutlet private weak var scoreLabel: UILabel!
+    @IBOutlet private weak var cheatButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -39,13 +40,23 @@ class SetViewController: UIViewController {
         updateViewFromModel()
     }
     
+    @IBAction private func touchCheat() {
+        if let matchCards = game.getMatchInDealtCards() {
+            for matchCard in matchCards {
+                let cardButton = cardButtons[game.dealtCards.index(of: matchCard)!]
+                cardButton.layer.borderWidth = 3.0
+                cardButton.layer.borderColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
+            }
+        }
+    }
+    
     private func updateViewFromModel() {
         // card buttons
         for index in cardButtons.indices {
             let cardButton = cardButtons[index]
             if index < game.dealtCards.count {
                 let dealtCard = game.dealtCards[index]
-                // matched card
+                // matched card (for end game cases)
                 if game.matchedCards.contains(dealtCard) { hideCardButton(cardButton) }
                 else {
                     updateCardButtonContent(cardButton, fromCard:dealtCard)
@@ -54,10 +65,10 @@ class SetViewController: UIViewController {
                     if game.selectedCards.contains(dealtCard) {
                         cardButton.layer.borderWidth = 3.0
                         if let cardMatched = game.selectedCardsMatch {
-                            if cardMatched { cardButton.layer.borderColor = UIColor.green.cgColor }
-                            else { cardButton.layer.borderColor = UIColor.red.cgColor }
+                            if cardMatched { cardButton.layer.borderColor = #colorLiteral(red: 0, green: 0.9768045545, blue: 0, alpha: 1) }
+                            else { cardButton.layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1) }
                         }
-                        else { cardButton.layer.borderColor = UIColor.blue.cgColor }
+                        else { cardButton.layer.borderColor = #colorLiteral(red: 0.01680417731, green: 0.1983509958, blue: 1, alpha: 1) }
                     }
                     // not selected card
                     else { cardButton.layer.borderWidth = 0.0 }
@@ -69,6 +80,9 @@ class SetViewController: UIViewController {
         // enable/disable deal more cards button
         let uiIsFull = !(game.selectedCardsMatch ?? false) && game.dealtCards.count == cardButtons.count
         dealMoreCardsButton.isEnabled = game.deck.count >= 3 && !uiIsFull
+        
+        // enable/disable cheat button
+        cheatButton.isEnabled = !(game.selectedCardsMatch ?? false)
         
         // score
         scoreLabel.text = "Score: \(game.score)"

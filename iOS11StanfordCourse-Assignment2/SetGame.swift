@@ -97,12 +97,14 @@ class SetGame {
         }
     }
     
-    // TODO: Improve
     func getMatchInDealtCards() -> [SetCard]? {
         let dealtCardsNotMatched = dealtCards.filter({ !matchedCards.contains($0) })
-        for card1 in dealtCardsNotMatched {
-            for card2 in dealtCardsNotMatched {
-                for card3 in dealtCardsNotMatched {
+        for index1 in 0..<dealtCardsNotMatched.count {
+            for index2 in (index1 + 1)..<dealtCardsNotMatched.count {
+                for index3 in (index2 + 1)..<dealtCardsNotMatched.count {
+                    let card1 = dealtCardsNotMatched[index1]
+                    let card2 = dealtCardsNotMatched[index2]
+                    let card3 = dealtCardsNotMatched[index3]
                     if card1.matchesWith(card2, card3) { return [card1, card2, card3] }
                 }
             }
