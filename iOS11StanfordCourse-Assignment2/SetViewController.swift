@@ -22,7 +22,6 @@ class SetViewController: UIViewController, AIPlayerDelegate {
     @IBOutlet private weak var dealMoreCardsButton: UIButton!
     @IBOutlet private var cardButtons: [UIButton]!
     @IBOutlet private weak var scoreLabel: UILabel!
-    @IBOutlet private weak var cheatButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -89,10 +88,7 @@ class SetViewController: UIViewController, AIPlayerDelegate {
         // enable/disable deal more cards button
         let uiIsFull = !(game.selectedCardsMatch ?? false) && game.dealtCards.count == cardButtons.count
         dealMoreCardsButton.isEnabled = game.deck.count >= 3 && !uiIsFull
-        
-        // enable/disable cheat button
-        cheatButton.isEnabled = !(game.selectedCardsMatch ?? false)
-        
+
         // score
         scoreLabel.text = "Score: \(game.score)"
     }

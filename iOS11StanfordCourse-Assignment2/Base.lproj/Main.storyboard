@@ -335,7 +335,6 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="cheatButton" destination="IjI-6N-31w" id="Z5O-mM-v7S"/>
                         <outlet property="dealMoreCardsButton" destination="2mH-xO-8LL" id="QCD-Kv-1Ph"/>
                         <outlet property="scoreLabel" destination="AOO-4V-PXA" id="Gyx-OJ-PgM"/>
                         <outletCollection property="cardButtons" destination="P50-03-ip8" collectionClass="NSMutableArray" id="hE0-Cf-TP8"/>
