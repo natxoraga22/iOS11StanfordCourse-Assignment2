@@ -48,7 +48,7 @@ class SetGame {
     }
     
     private func getRandomCard() -> SetCard? {
-        return !deck.isEmpty ? deck.remove(at: Int.random(deck.count)) : nil
+        return !deck.isEmpty ? deck.remove(at: Int.random(max: deck.count)) : nil
     }
     
     func dealThreeMoreCards() {

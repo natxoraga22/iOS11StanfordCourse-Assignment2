@@ -8,10 +8,39 @@
 
 import Foundation
 
+// MARK: Int Extension
 
-extension Int {
-    static func random(_ upperBound: Int) -> Int {
-        if upperBound > 0 { return Int(arc4random_uniform(UInt32(upperBound))) }
-        else { return 0 }
+public extension Int {
+    
+    private static var random: Int {
+        return Int.random(max: Int.max)
     }
+
+    public static func random(max: Int) -> Int {
+        return Int(arc4random_uniform(UInt32(max)))
+    }
+
+    public static func random(min: Int, max: Int) -> Int {
+        return Int.random(max: max - min + 1) + min
+    }
+    
+}
+
+
+// MARK: Double Extension
+
+extension Double {
+    
+    private static var random: Double {
+        return Double(arc4random()) / 0xFFFFFFFF
+    }
+    
+    public static func random(max: Double) -> Double {
+        return Double.random * max
+    }
+    
+    public static func random(min: Double, max: Double) -> Double {
+        return Double.random * (max - min) + min
+    }
+    
 }

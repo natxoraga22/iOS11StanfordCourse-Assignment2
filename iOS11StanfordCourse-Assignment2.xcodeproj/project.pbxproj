@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3800B296212C9DE7002E6F86 /* AIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3800B295212C9DE7002E6F86 /* AIPlayer.swift */; };
 		3815FF6021271AC80053303A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3815FF5F21271AC80053303A /* AppDelegate.swift */; };
 		3815FF6221271AC80053303A /* SetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3815FF6121271AC80053303A /* SetViewController.swift */; };
 		3815FF6521271AC80053303A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3815FF6321271AC80053303A /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3800B295212C9DE7002E6F86 /* AIPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPlayer.swift; sourceTree = "<group>"; };
 		3815FF5C21271AC80053303A /* iOS11StanfordCourse-Assignment2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS11StanfordCourse-Assignment2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3815FF5F21271AC80053303A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3815FF6121271AC80053303A /* SetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetViewController.swift; sourceTree = "<group>"; };
@@ -61,8 +63,9 @@
 			isa = PBXGroup;
 			children = (
 				3815FF5F21271AC80053303A /* AppDelegate.swift */,
-				3815FF712127258F0053303A /* SetCard.swift */,
 				3815FF73212726460053303A /* SetGame.swift */,
+				3815FF712127258F0053303A /* SetCard.swift */,
+				3800B295212C9DE7002E6F86 /* AIPlayer.swift */,
 				3815FF6121271AC80053303A /* SetViewController.swift */,
 				3815FF7521273D450053303A /* Random.swift */,
 				3815FF6321271AC80053303A /* Main.storyboard */,
@@ -148,6 +151,7 @@
 				3815FF722127258F0053303A /* SetCard.swift in Sources */,
 				3815FF7621273D450053303A /* Random.swift in Sources */,
 				3815FF6221271AC80053303A /* SetViewController.swift in Sources */,
+				3800B296212C9DE7002E6F86 /* AIPlayer.swift in Sources */,
 				3815FF6021271AC80053303A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
