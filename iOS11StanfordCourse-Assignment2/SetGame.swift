@@ -33,17 +33,17 @@ class SetGame {
     private static let dealThreeCardsWithMatchOnTableScore = -2
     
     // AIPlayer
-    private lazy var aiPlayer = AIPlayer(game: self)
+    private(set) lazy var aiPlayer = AIPlayer()
     private(set) var aiPlayerScore = 0
     var aiPlayerDelegate: AIPlayerDelegate?
     
     
     init() {
         // create a standard Set deck (one card for each combination)
-        for number in SetCard.minNumber...SetCard.maxNumber {
-            for symbol in SetCardSymbol.allCases {
-                for shading in SetCardShading.allCases {
-                    for color in SetCardColor.allCases {
+        for number in SetCard.Number.allCases {
+            for symbol in SetCard.Symbol.allCases {
+                for shading in SetCard.Shading.allCases {
+                    for color in SetCard.Color.allCases {
                         deck += [SetCard(number: number, symbol: symbol, shading: shading, color: color)]
                     }
                 }
@@ -102,16 +102,34 @@ class SetGame {
                     
                     // AI Player
                     aiPlayer.stopSearching()
-                    aiPlayer.searchMatch { matchCards in
-                        self.selectedCards = matchCards
-                        self.replaceDealtSelectedCards()
-                        self.aiPlayerScore += SetGame.matchScore
-                        self.aiPlayerDelegate?.didFindMatch()
-                    }
+                    aiPlayer.searchMatch(onAlmostDone: aiPlayerAlmostDone, onSearchFinished: aiPlayerSearchFinished)
                 }
                 else { score += SetGame.mismatchScore }
             }
         }
+    }
+    
+    func aiPlayerAlmostDone() {
+        aiPlayerDelegate?.willFindMatch()
+    }
+    
+    func aiPlayerSearchFinished() {
+        if let matchCards = getMatchInDealtCards() {
+            // AI player match
+            if let previousMatch = selectedCardsMatch, previousMatch {
+                matchedCards.append(contentsOf: selectedCards)
+                replaceDealtSelectedCards()
+            }
+            selectedCards = matchCards
+            matchedCards.append(contentsOf: selectedCards)
+            replaceDealtSelectedCards()
+            
+            aiPlayerScore += SetGame.matchScore
+        }
+        else {
+            aiPlayer.stopSearching()
+        }
+        aiPlayerDelegate?.didFindMatch()
     }
     
     func getMatchInDealtCards() -> [SetCard]? {

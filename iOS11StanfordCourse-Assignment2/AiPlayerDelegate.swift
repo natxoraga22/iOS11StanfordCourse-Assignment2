@@ -11,6 +11,7 @@ import Foundation
 
 protocol AIPlayerDelegate {
     
+    func willFindMatch()
     func didFindMatch()
     
 }

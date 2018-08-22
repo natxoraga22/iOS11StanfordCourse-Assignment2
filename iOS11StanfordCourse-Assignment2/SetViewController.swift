@@ -22,6 +22,7 @@ class SetViewController: UIViewController, AIPlayerDelegate {
     @IBOutlet private weak var dealMoreCardsButton: UIButton!
     @IBOutlet private var cardButtons: [UIButton]!
     @IBOutlet private weak var scoreLabel: UILabel!
+    @IBOutlet private weak var aiPlayerScoreLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -52,6 +53,10 @@ class SetViewController: UIViewController, AIPlayerDelegate {
                 cardButton.layer.borderColor = #colorLiteral(red: 0, green: 0.9914394021, blue: 1, alpha: 1)
             }
         }
+    }
+    
+    func willFindMatch() {
+        updateViewFromModel()
     }
     
     func didFindMatch() {
@@ -89,8 +94,9 @@ class SetViewController: UIViewController, AIPlayerDelegate {
         let uiIsFull = !(game.selectedCardsMatch ?? false) && game.dealtCards.count == cardButtons.count
         dealMoreCardsButton.isEnabled = game.deck.count >= 3 && !uiIsFull
 
-        // score
-        scoreLabel.text = "Score: \(game.score)"
+        // scores
+        scoreLabel.text = "🏆 \(game.score)"
+        aiPlayerScoreLabel.text = getAIPlayerEmoji() + " \(game.aiPlayerScore)"
     }
     
     private func hideCardButton(_ cardButton: UIButton) {
@@ -110,7 +116,7 @@ class SetViewController: UIViewController, AIPlayerDelegate {
         }
         // number
         var textArray = [String]()
-        for _ in 1...card.number { textArray += [symbol] }
+        for _ in 1...card.number.rawValue { textArray += [symbol] }
         let text = textArray.joined(separator: "\n")
         // color
         var strokeColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -138,6 +144,16 @@ class SetViewController: UIViewController, AIPlayerDelegate {
         let attributedText = NSAttributedString(string: text, attributes: attributes)
         cardButton.setAttributedTitle(attributedText, for: UIControlState.normal)
         cardButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    }
+    
+    private func getAIPlayerEmoji() -> String {
+        switch game.aiPlayer.status {
+            case .idle: return "😴"
+            case .thinking: return "🤔"
+            case .almostDone: return "😁"
+            case .matchFound: return "😂"
+            case .matchLost: return "😢"
+        }
     }
 
 }

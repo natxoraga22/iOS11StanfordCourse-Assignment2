@@ -11,36 +11,36 @@ import Foundation
 
 class AIPlayer {
     
-    private static let minThinkingTime = 10.0
-    private static let maxThinkingTime = 20.0
+    private static let minThinkingTime = 20.0
+    private static let maxThinkingTime = 30.0
     
-    private var status = AIPlayerStatus.idle
-    private var game: SetGame
+    private(set) var status = AIPlayerStatus.idle
     
-    private var currentTimer: Timer?
+    private var almostDoneTimer: Timer?
+    private var searchFinishedTimer: Timer?
     
     
-    init(game: SetGame) {
-        self.game = game
-    }
-    
-    func searchMatch(onMatchFound matchFoundCallback: @escaping ((_: [SetCard]) -> Void)) {
+    func searchMatch(onAlmostDone almostDoneCallback: @escaping () -> Void, onSearchFinished searchFinishedCallback: @escaping () -> Void) {
         status = .thinking
-        
-        if currentTimer == nil {
+        if searchFinishedTimer == nil {
             let timeInterval = Double.random(min: AIPlayer.minThinkingTime, max: AIPlayer.maxThinkingTime)
-            currentTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { (timer) in
-                if let matchCards = self.game.getMatchInDealtCards() {
-                    self.status = .matchFound
-                    matchFoundCallback(matchCards)
-                }
+            almostDoneTimer = Timer.scheduledTimer(withTimeInterval: timeInterval - 5.0, repeats: false) { (timer) in
+                self.status = .almostDone
+                almostDoneCallback()
+            }
+            searchFinishedTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { (timer) in
+                self.status = .matchFound
+                searchFinishedCallback()
             }
         }
     }
     
     func stopSearching() {
-        currentTimer?.invalidate()
-        currentTimer = nil
+        status = .matchLost
+        almostDoneTimer?.invalidate()
+        searchFinishedTimer?.invalidate()
+        almostDoneTimer = nil
+        searchFinishedTimer = nil
     }
     
 }
@@ -50,4 +50,5 @@ enum AIPlayerStatus {
     case thinking
     case almostDone
     case matchFound
+    case matchLost
 }
