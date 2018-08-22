@@ -99,13 +99,11 @@ class SetGame {
             if let newMatch = selectedCardsMatch {
                 if newMatch {
                     score += SetGame.matchScore
-                    
-                    // AI Player
                     aiPlayer.stopSearching()
-                    aiPlayer.searchMatch(onAlmostDone: aiPlayerAlmostDone, onSearchFinished: aiPlayerSearchFinished)
                 }
                 else { score += SetGame.mismatchScore }
             }
+            aiPlayer.searchMatch(onAlmostDone: aiPlayerAlmostDone, onSearchFinished: aiPlayerSearchFinished)
         }
     }
     
